@@ -1,7 +1,7 @@
 #!/bin/sh
 
-cmus_max_song_length=10
-cmus_max_artist_length=10
+cmus_max_song_length=20
+cmus_max_artist_length=15
 
 
 truncate_song() {
@@ -22,9 +22,9 @@ pretty_time() {
   ((mcurrent=(${2}%3600)/60))
   ((scurrent=${2}%60))
 
-  if [ "$htotal" == "0" ]; then		
+  if [ "$htotal" == "0" ]; then
     printf "%02d:%02d/%02d:%02d" $mcurrent $scurrent $mtotal $stotal
-  else 
+  else
     printf "%02d:%02d:%02d/%02d:%02d:%02d" $hcurrent $mcurrent $scurrent $htotal $mtotal $stotal
   fi
 }
@@ -37,17 +37,16 @@ cmus_status() {
     #The lines below works fine. Just uncomment them and add them
     # in np below if you want the track number or album name.
     #cmus_tracknumber=$(echo $cmus_data | grep "tracknumber" | cut -d ' ' -f 3)
-    local cmus_album=$(cmus-remote -Q | egrep "^tag album " | cut -d ' ' -f 3-)
-    local cmus_album=$(cmus-remote -Q | egrep "^tag album " | cut -d ' ' -f 3-)
-    local cmus_duration=$(cmus-remote -Q | egrep "^duration " | cut -d ' ' -f 2)
-    local cmus_position=$(cmus-remote -Q | egrep "^position " | cut -d ' ' -f 2)
-    
-    local cmus_combined="$(truncate_artist $cmus_artist) - $(truncate_song $cmus_title) $(pretty_time $cmus_duration $cmus_position)"
+    # local cmus_album=$(cmus-remote -Q | egrep "^tag album " | cut -d ' ' -f 3-)
+    # local cmus_duration=$(cmus-remote -Q | egrep "^duration " | cut -d ' ' -f 2)
+    # local cmus_position=$(cmus-remote -Q | egrep "^position " | cut -d ' ' -f 2)
+    # local cmus_combined="$(truncate_artist $cmus_artist) - $(truncate_song $cmus_title) $(pretty_time $cmus_duration $cmus_position)"
+    local cmus_combined="$(truncate_artist $cmus_artist) - $(truncate_song $cmus_title)"
 
     if [ "$cmus_status" == "playing" ]; then
-      echo "🎵  ${cmus_combined}"
+      echo "🎧 ${cmus_combined}"
     elif [ "$cmus_status" == "paused" ]; then 
-      echo "${cmus_combined}"
+      echo "😶 ${cmus_combined}"
     fi
   fi
 }
